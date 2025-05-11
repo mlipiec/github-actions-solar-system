@@ -77,6 +77,8 @@ jobs:
     dev-deploy:
       needs: docker
       runs-on: ubuntu-latest
+      outputs:
+        integration_test_url: ${{ steps.integration_test_url.outputs.INTEGRATION_URL }}
       environment:
         name: development
       steps:
@@ -106,9 +108,10 @@ jobs:
             INGRESS_IP: '${{ env.INGRESS_IP }}'
         - run: |
             echo "INTEGRATION_URL=127.0.0.1" >> $GITHUB_OUTPUT
+          id: integration_test_url
         - run: cat kubernetes/development/*.yaml
     dev-integration-testing:
       needs: dev-deploy
       uses: ./.github/workflows/reusable-workflow.yml
       with:
-        ingress-url: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL }}
+        ingress-url: ${{ needs.dev-deploy.outputs.integration_test_url }}
