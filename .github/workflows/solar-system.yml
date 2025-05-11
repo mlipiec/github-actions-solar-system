@@ -62,6 +62,8 @@ jobs:
           path: coverage
           retention-days: 5
     docker:
+      permissions: 
+        packages: write
       needs:
         - unit-testing
         - code-coverage
