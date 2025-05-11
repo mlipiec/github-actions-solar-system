@@ -13,4 +13,5 @@ jobs:
       - env:
           URL: '${{ inputs.ingress-url }}'
         run: |
+          echo -e "URL for testing: ${{ env.URL }}"
           curl https://$URL/live -s -k | jq -r .status | grep -i live
